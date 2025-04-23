@@ -61,10 +61,10 @@ Version 3 reorders identifiers like IPN, ISNI, etc into objects tied with the en
 | track_number | Integer | "track_number": 1 |  Included in `song` |
 | song_title | String \| Array\<String\> | "song_title": "Let's Turn it On" |  Included in `song` |
 | song_duration | String | "song_duration": "PT3M21S"  | ISO8601 Duration Format, included in `song`  https://www.iso.org/iso-8601-date-and-time-format.html |
-| copyright | String | "copyright": {"master":"℗ 1985 Sony Records", "composition":"© 1985 Marvin Gaye"}  or <br/> "copyright": {"composition": "Public Domain", "master": "℗ 2024 Cool Guy"} | Included in `release` within "Album/EP" `release_type` (ONLY IF **ALL** compositions are owned by the same artist) , and in `song` within "Single" and "Multiple" releases. |
+| copyright | Object | "copyright": {"master": ["℗ 1985 Sony Records"], "composition": ["© 1985 Marvin Gaye"]} or <br/> "copyright": {"composition": ["Public Domain"], "master": ["℗ 2024 Cool Guy"]} | Included in `release` within "Album/EP" `release_type`, and in `song` for track-specific copyright information |within "Single" and "Multiple" releases. |
 | genres | Array\<String\> | "genres": ["Rock","Classic Rock"] | Limited to 3 genres total. Players should ignore extra genres. Included in `song` within "Single" and "Multiple" releases, and in `release` for "Album/EP" releases should all songs share the same `genre` values. |
 | release_type | Enum\<String\> | "release_type": "Single" | Must be "Single", "Album/EP" for GRAM (Group Registration for Works on an Album of Music- https://www.copyright.gov/rulemaking/gram/) publications, or "Multiple" (for all other cases"). "Multiple" and "Album/EP" releases need to be wary of txn size limits .  Included in `release`  |
-| music_metadata_version | Integer | "music_metadata_version" : "3" | Players should look for the presence of this field to determine if the token is a Music Token.  Use integers only. |
+| music_metadata_version | Integer | "music_metadata_version" : 3 | Players should look for the presence of this field to determine if the token is a Music Token.  Use integers only. |
 
 #### Optional Fields ###
 | Field | Type | Example(s) | Notes |
@@ -224,7 +224,7 @@ Version 3 reorders identifiers like IPN, ISNI, etc into objects tied with the en
                                 "<genre>",
                                 "<genre>"
                             ],
-                            "copyright": {"master": "℗ <year, copyrightHolder>", "composition": "© <year, copyrightHolder>"}
+                            "copyright": {"master": ["℗ <year, copyrightHolder>"], "composition": ["© <year, copyrightHolder>"]}
                         }
                     }
                     
@@ -247,8 +247,8 @@ Version 3 reorders identifiers like IPN, ISNI, etc into objects tied with the en
                     "release_type": "Album/EP",
                     "release_title": "Zipline From Outerspace",
                     "copyright": {
-                        "master": "℗ 2024 Refraktal",
-                        "composition": "© 2024 Refraktal"
+                        "master": ["℗ 2024 Refraktal"],
+                        "composition": ["© 2024 Refraktal"]
                     },
                     "artists": [
                         {
@@ -662,8 +662,8 @@ Version 3 reorders identifiers like IPN, ISNI, etc into objects tied with the en
                                                                         {"k": {"bytes": "636F707972696768"}, "v": 
                                                                             {
                                                                                 "map": [
-                                                                                    {"k": {"bytes": "6D6173746572"}, "v": {"bytes": "<encoded ℗ <year, copyrightHolder>"}},
-                                                                                    {"k": {"bytes": "636F6D706F736974696F6E"}, "v": {"bytes": "<encoded © <year, copyrightHolder>"}}
+                                                                                    {"k": {"bytes": "6D6173746572"}, "v": {"bytes": ["<encoded ℗ <year, copyrightHolder>"]}},
+                                                                                    {"k": {"bytes": "636F6D706F736974696F6E"}, "v": {"bytes": ["<encoded © <year, copyrightHolder>"]}}
                                                                                 ]
                                                                             }
                                                                         }
